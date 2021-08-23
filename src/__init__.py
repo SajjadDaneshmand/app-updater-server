@@ -21,6 +21,14 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    import auth
+    app.register_blueprint(auth.bp)
+
+    import upload
+    app.register_blueprint(upload.bp)
+    app.add_url_rule('/', endpoint='index')
+
     return app
 
 
