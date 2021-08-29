@@ -1,18 +1,18 @@
 
-
-{% extends 'base.html' %}
-
-{% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
-{% endblock %}
+<head>
+  <link href='{{ url_for("static", filename='signup.css') }}' rel="stylesheet" media="screen">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign up</title>
+</head>
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" required>
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Register">
-  </form>
-{% endblock %}
+  <body>
+    <div class="main">
+      <p class="sign" align="center">Sign up</p>
 
+    <form  class="form1" method="post">
+      <input class="email" type="email" name="email" align="center" placeholder="e-mail">
+      <button class="submit" align="center">checking</button>
+    </form>
+{% endblock %}
