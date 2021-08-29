@@ -1,0 +1,23 @@
+<html>
+
+    <head>
+      <link href='{{ url_for("static", filename='confirm_email.css') }}' rel="stylesheet" media="screen">
+      <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Sign in</title>
+    </head>
+    
+    <body>
+      <div class="main">
+        <p class="head_text" align="center">Activate Account</p>
+        <form class="form1" method="post">
+          <input class="activation_code" type="text" name="activation_code" align="center" placeholder="- - - -">
+          {% for message in get_flashed_messages() %}
+            <div class="flash" align="center">{{ message }}</div>
+          {% endfor %}
+          <button class="submit" align="center">check</button>
+        </div>
+    
+    </body>
+    
+    </html>

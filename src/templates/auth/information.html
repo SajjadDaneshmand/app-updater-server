@@ -1,0 +1,24 @@
+<html>
+
+<head>
+  <link href='{{ url_for("static", filename='information.css') }}' rel="stylesheet" media="screen">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signup|Information</title>
+</head>
+
+<body>
+  <div class="main">
+    <p class="info" align="center">Information</p>
+    <form class="form1" method="post">
+      <input class="username" type="text" name="username" align="center" placeholder="Username">
+      <input class="first_name" type="text" name="first_name" align="center" placeholder="First name">
+      <input class="last_name" type="text" name="last_name" align="center" placeholder="Last name">
+      <input class="password" type="password" id="password" name="password" align="center" placeholder="Password" required>
+      {% for message in get_flashed_messages() %}
+        <div class="flash" align="center">{{ message }}</div>
+      {% endfor %}
+      <button class="submit" align="center">submit</button>
+    </div>
+</body>
+</html>
