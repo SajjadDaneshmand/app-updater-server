@@ -1,13 +1,38 @@
-import functools
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, g, render_template, url_for, request, redirect, session, flash
 )
+
 from werkzeug.security import check_password_hash, generate_password_hash
 
+import functools
 from database_functions import get_db
 from mysql.connector.errors import IntegrityError
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('index', __name__, url_prefix='/')
+
+
+@bp.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+    return wrapped_view
+
+
+@bp.route('/upload', methods=('GET', 'POST'))
+@login_required
+def upload():
+    if request.method == 'POST':
+        pass
+
+    return render_template('upload.html')
 
 
 @bp.route('/signup', methods=('GET', 'POST'))
@@ -88,11 +113,4 @@ def logout():
     return redirect(url_for('index'))
 
 
-def login_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
 
-        return view(**kwargs)
-    return wrapped_view
