@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS releases(
     app_id INT NOT NULL,
     version VARCHAR(64) NOT NULL,
     changelog TEXT NOT NULL,
-    date DATETIME,
+    date_of_release DATETIME,
     FOREIGN KEY(app_id) REFERENCES applications(id)
 );
 
