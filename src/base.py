@@ -26,6 +26,16 @@ def login_required(view):
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for('index.login'))
+
+        return view(**kwargs)
+    return wrapped_view
+
+
+def access_checker(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('index.login'))
         elif g.user[-1] == 0:
             return redirect(url_for('index.access'))
 
@@ -35,6 +45,7 @@ def login_required(view):
 
 
 @bp.route('/do-not-access', methods=['GET'])
+@login_required
 def access():
     return render_template('access.html')
 
@@ -61,7 +72,7 @@ def signup_information(view):
 
 
 @bp.route('/account', methods=('GET', 'POST'))
-@login_required
+@access_checker
 def account():
     if request.method == 'POST':
         pass
