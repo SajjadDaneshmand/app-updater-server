@@ -30,6 +30,6 @@ CREATE TABLE IF NOT EXISTS users(
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    upload BOOLEAN NOT NULL DEFAULT false,
+    access BOOLEAN NOT NULL DEFAULT false,
     token VARCHAR(255)
 );
