@@ -1,17 +1,15 @@
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask import (
-    Blueprint, g, render_template, url_for, request, redirect, session, flash, current_app
+    Blueprint, g, render_template, url_for, request, redirect, session, flash, current_app, jsonify, send_file
 )
-from mysql.connector.errors import IntegrityError
+from databases import Release, User, db
+from werkzeug.exceptions import BadRequestKeyError
+from sqlalchemy.exc import IntegrityError
 from flask_mail import Mail, Message
+import functools
+import random
 import re
 import os
-import random
-
-from werkzeug.security import check_password_hash, generate_password_hash
-
-import functools
-from database_functions import get_db
-from mysql.connector.errors import IntegrityError
 
 bp = Blueprint('index', __name__, url_prefix='/')
 
@@ -36,7 +34,7 @@ def access_checker(view):
     def wrapped_view(**kwargs):
         if g.user is None:
             return redirect(url_for('index.login'))
-        elif g.user[-1] == 0:
+        elif g.user.access == 0:
             return redirect(url_for('index.access'))
 
         return view(**kwargs)
@@ -71,15 +69,6 @@ def signup_information(view):
     return wrapped_view
 
 
-@bp.route('/account', methods=('GET', 'POST'))
-@access_checker
-def account():
-    if request.method == 'POST':
-        pass
-
-    return render_template('account.html')
-
-
 @bp.route('/signup', methods=('GET', 'POST'))
 def email_sender():
     if request.method == 'POST':
@@ -103,11 +92,10 @@ def email_sender():
 @signup_email_confirm_required
 def email_verification():
     if request.method == 'POST':
-        error = None
         code = request.form['activation_code']
         if int(code) == int(session.get('activation_code')):
             session['check'] = True
-            return redirect(url_for('index.information'))  # TODO: create information function for confirm info of user
+            return redirect(url_for('index.information'))
         else:
             error = 'Incorrect activation code.'
         flash(error)
@@ -124,23 +112,17 @@ def information():
         last_name = request.form['last_name']
         email = session.get('email')
         password = generate_password_hash(request.form['password'])
-        db = get_db()
-        cursor = db.cursor()
-        error = None
-        command = """
-                INSERT INTO users(id, first_name, last_name, email, password)
-                VALUES(%s, %s, %s, %s, %s)
-            """
-        values = (username, first_name, last_name, email, password)
         try:
-            cursor.execute(command, values)
+            add_user = User(username=username, first_name=first_name, last_name=last_name,
+                            email=email, password=password, token=os.urandom(64).hex())
+            db.session.add(add_user)
+            db.session.commit()
         except IntegrityError:
-            error = 'This user was exist.'
-        else:
-            db.commit()
-            return redirect(url_for('index.login'))
+            error = 'This username was for another person'
+            flash(error)
+            return redirect(request.url)
+        return redirect(url_for('index.login'))
 
-        flash(error)
     return render_template('auth/information.html')
 
 
@@ -159,26 +141,21 @@ def login():
         username = request.form['username']
         password = request.form['password']
         captcha = request.form['captcha']
+        user = User.query.filter_by(username=username).first()
 
-        db = get_db()
-        cursor = db.cursor()
         error = None
 
-        cursor.execute(
-            "SELECT * FROM users WHERE id = %s", (username,)
-        )
-        user = cursor.fetchone()
         if not check_password_hash(session.get('security_code'), captcha):
             error = 'Incorrect security code.'
         elif user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user[4], password):
+        elif not check_password_hash(user.password, password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user[0]
-            return redirect(url_for('index.account'))
+            session['user_id'] = user.username
+            return redirect(url_for('account.account'))
         else:
             img_list = os.listdir("static/captcha")
             img = img_list[random.randint(0, 1000)]
@@ -190,21 +167,60 @@ def login():
             return render_template('auth/login.html', variable=img_path)
 
 
+@bp.route('/uploads/<name>', methods=['POST'])
+def upload(name):
+    try:
+        token = request.form['token']
+    except BadRequestKeyError:
+        error = {
+            'status': 'failed',
+            'message': 'please send requirement (token)'
+        }
+        return jsonify(error)
+
+    token_verification = db.session.query(User).filter_by(token=token).first()
+
+    if token_verification is None:
+        error = {
+            'status': 'failed',
+            'message': 'this token does not exist'
+        }
+        return jsonify(error)
+    simple_version = db.session.query(Release.app_link).first()[0]
+    upload_dir = simple_version.rsplit('/', 1)[0]
+    app_full_path = upload_dir + '/' + name
+    apps = os.listdir(upload_dir)
+
+    user_access_checker = int(db.session.query(User.access).filter_by(token=token).first()[0])
+
+    if not user_access_checker:
+        error = {
+            'status': 'failed',
+            'message': 'you don\'t have permission'
+        }
+        return jsonify(error)
+
+    if name not in apps:
+        error = {
+            'status': 'failed',
+            'message': 'this file does not exist'
+        }
+        return jsonify(error)
+
+    get_version = db.session.query(Release.app_link).filter(Release.app_link == app_full_path).first()[0]
+    return send_file(get_version)
+
+
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
     else:
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute(
-            "SELECT * FROM users WHERE id = %s", (user_id,)
-        )
-        g.user = cursor.fetchone()
+        g.user = User.query.filter_by(username=user_id).first()
 
 
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('index.login'))
