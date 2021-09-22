@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <link href="{{ url_for('static', filename='account/add_version.css') }}" rel="stylesheet" media="screen">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-medium.woff') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-bold.woff') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Version</title>
+</head>
+
+<body>
+  <div class="main">
+    <p class="add_version" align="center" dir="rtl">اضافه کردن ورژن</p>
+    <form class="form1" enctype="multipart/form-data" method="post">
+        <select class="apps" name="apps">
+            {% for app in apps %}
+                <option value="{{ app }}">{{ app }}</option>
+            {% endfor %}
+        </select>
+        <input class="version" type="text" name="version" align="center" placeholder="ورژن" dir="rtl">
+        <textarea class="changelog" name="changelog" align="center" placeholder="تغییرات" rows="5" dir="rtl"></textarea>
+        <br>
+        <label class="file_text" dir="rtl">لطفا فایل مورد نظر را انتخاب کنید</label>
+        <input class="file" type="file" name="app_file" align="center" dir="rtl">
+        {% for message in get_flashed_messages() %}
+          <div class="flash" align="center" dir="rtl">{{ message }}</div>
+        {% endfor %}
+        <button class="submit" align="center" dir="rtl">تایید</button>
+        <p class="add_app" align="center" dir="rtl"><a href="{{ url_for('account.add_app') }}">اضافه کردن اپلیکیشن</a></p>
+
+    </div>
+
+</body>
+
+</html>

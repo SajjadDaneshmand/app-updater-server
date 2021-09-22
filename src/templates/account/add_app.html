@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <link href="{{ url_for('static', filename='account/add_app.css') }}" rel="stylesheet" media="screen">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-medium.woff') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-bold.woff') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Application</title>
+</head>
+
+<body>
+  <div class="main">
+    <p class="add_app" align="center" dir="rtl">اضافه کردن اپلیکیشن</p>
+    <form class="form1" method="post">
+      <input class="name" type="text" name="app_name" align="center" placeholder="نام" dir="rtl">
+      <input class="author" type="text" name="app_author" align="center" placeholder="سازنده" dir="rtl">
+      <textarea class="description" name="app_description" align="center" placeholder="توضیحات" rows="5" dir="rtl"></textarea>
+      {% for message in get_flashed_messages() %}
+        <div class="flash" align="center" dir="rtl">{{ message }}</div>
+      {% endfor %}
+      <button class="submit" align="center" dir="rtl">تایید</button>
+      <p class="add_version" align="center" dir="rtl"><a href="{{ url_for('account.add_version') }}">اضافه کردن ورژن</a></p>
+
+    </div>
+
+</body>
+
+</html>
+
