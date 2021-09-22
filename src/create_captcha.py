@@ -1,6 +1,5 @@
 from random import randint
 from PIL import Image, ImageDraw, ImageFont
-import hashlib
 from werkzeug.security import generate_password_hash
 
 
@@ -20,7 +19,7 @@ def generate_captcha(width=140, height=60, length=4):
     #  generate verification code
     img = Image.new("RGB", (width, height), (250, 250, 250))
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("static/font/Ubuntu-Italic.ttf", size=36)
+    font = ImageFont.truetype("/home/sajjad/Project/app-updater-server/src/static/fonts/Ubuntu-Italic.ttf", size=36)
     #  captcha text
     text = ""
     for i in range(length):
@@ -46,4 +45,4 @@ def generate_captcha(width=140, height=60, length=4):
 
 if __name__ == "__main__":
     for i in range(1000):
-        print(generate_captcha())
+        generate_captcha()
