@@ -1,18 +1,25 @@
 <html>
-    <body style="background-color: rgb(21, 32, 43);text-align: center;color:white;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
 
-        <title>For Fun :)</title>
-        <h1 style="font-size: 40px;">Bahman</h1>
-        <hr style="width: 1000px;">
-        <div class="mainbox" style="width: 500px; margin: 0 auto;" >
+<head>
+  <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet" media="screen">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-medium.woff') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='fonts/vazir-bold.woff') }}" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Application</title>
+</head>
 
-                <p style="font-size: 16px;text-align: left;">
-                    This web application is for scrap data in bahman site. with this, you can
-                    download all the parts of car's price as excel. for download file you should
-                    go to <a href={{ url_for('index.login') }} style="color: yellow"><strong>this page</strong></a>
-                     for login and <a href={{ url_for('index.account') }} style="color: yellow;"><strong>this page</strong></a>
-                      is<br>for upload new application :)
-                </p>
-        </div>        
-    </body>
+<body>
+  <div class="main">
+    <p class="description" align="center" dir="rtl">توضیحات</p>
+    <p class="info" align="center" dir="rtl">
+        با سلام. این یک وب اپلیکیشن است که برای بروزرسانی و همچنین اضافه کردن اپلیکیشن های شرکت معین وب مورد بهره برداری قرار میگیرد. برای ورود میتوانید به <a href="{{ url_for('index.login') }}">اینجا</a>
+         و همچنین برای ثبت نام میتوانید به این <a href="{{ url_for('index.email_sender') }}">لینک</a> مراجعه فرمایید
+    </p>
+
+
+    </div>
+
+</body>
+
 </html>
