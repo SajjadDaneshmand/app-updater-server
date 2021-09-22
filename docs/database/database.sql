@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS releases(
     version VARCHAR(64) NOT NULL,
     changelog TEXT NOT NULL,
     date_of_release DATETIME,
+    app_link VARCHAR(255) NOT NULL,
     FOREIGN KEY(app_id) REFERENCES applications(id)
 );
 
@@ -31,5 +32,6 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     access BOOLEAN NOT NULL DEFAULT false,
+    admin BOOLEAN NOT NULL DEFAULT false,
     token VARCHAR(255)
 );
