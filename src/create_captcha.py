@@ -19,7 +19,7 @@ def generate_captcha(width=140, height=60, length=4):
     #  generate verification code
     img = Image.new("RGB", (width, height), (250, 250, 250))
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("/home/sajjad/Project/app-updater-server/src/static/fonts/Ubuntu-Italic.ttf", size=36)
+    font = ImageFont.truetype("static/fonts/Ubuntu-Italic.ttf", size=36)
     #  captcha text
     text = ""
     for i in range(length):
