@@ -2,7 +2,7 @@
 
         body {
             background-color: #F3EBF6;
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-family: 'Vazir', sans-serif;
         }
     
         .main {
@@ -17,7 +17,7 @@
         .access {
             padding-top: 40px;
             color: #8C55AA;
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-family: 'Vazir', sans-serif;
             font-weight: bold;
             font-size: 23px;
         }
@@ -25,9 +25,10 @@
         .info {
             padding-top: 40px;
             color: black;
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-            font-weight: bold;
+            font-family: 'Vazir', sans-serif;
             font-size: 18px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
     

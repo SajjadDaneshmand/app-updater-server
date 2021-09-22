@@ -4,10 +4,8 @@
 
     <head>
       <link href='{{ url_for("static", filename='access.css') }}' rel="stylesheet" media="screen">
-      <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300&display=swap" rel="stylesheet"> 
+      <link href="{{ url_for('static', filename='fonts/vazir-medium.woff') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='fonts/vazir-bold.woff') }}" rel="stylesheet">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Info</title>
     </head>
@@ -17,8 +15,7 @@
         <p class="access" align="center" dir="rtl" >پوزش!</p>
         <p class="info" align="center" dir="rtl">
             با عرض شرمندگی باید بگوییم که شما دسترسی لازم برای آپلود محصول جدید و تغییر آنها را ندارید. اما 
-            هنوز امیدی هست!! احتمال دارد که مدیر سایت این دسترسی را برای شما فعال کند. اگر این اتفاق افتاد، ما حتما از طریق ایمیل به شما اطلاع 
-            خواهیم داد پس تا آن موقع میتوانید دخیل ببندید شاید نتیجه داد :)
+             :)هنوز امیدی هست!! احتمال دارد که مدیر سایت این دسترسی را برای شما فعال کند. پس تا آن موقع میتوانید دخیل ببندید شاید نتیجه داد :)
         </p>
     
         </div>
